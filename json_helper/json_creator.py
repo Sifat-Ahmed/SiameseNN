@@ -9,12 +9,14 @@ class JsonCreator:
     def __init__(self,
                  data_path,
                  output_filename,
-                 ):
+                 num_classes):
         self._data_path = data_path
         self._output_filename = output_filename
-        self._classes = os.listdir(self._data_path)
+        self._temp_classes = os.listdir(self._data_path)
         self._json_info = Json_data()
         self._dataset_list = list()
+        self._classes = list()
+        self._num_classes = num_classes
 
 
     def __get_path__(self, path_1, path_2):
@@ -40,13 +42,24 @@ class JsonCreator:
         #     "images": self._images_list,
         #     "annotations": self._annotations_list
         # }
+
+        for _cls in self._temp_classes:
+            dir_path = os.path.join(self._data_path, _cls)
+            images = os.listdir(dir_path)
+
+            if len(images) > 500 and len(images) < 1000:
+                self._classes.append(_cls)
+
         size = 0
 
-        for cls_ in tqdm(self._classes[30:35]):
+        if len(self._classes) < self._num_classes:
+            raise Exception("Not enough classes, only {} classes available.".format(len(self._classes)))
+
+        for cls_ in tqdm(self._classes[:self._num_classes]):
 
             images = os.listdir(os.path.join(self._data_path, cls_))
-            x = [i for i in range(0, len(images)-1, 5)]
-            y = [i for i in range(len(images)-1, 0, -5)]
+            x = [i for i in range(0, len(images)-1, 2)]
+            y = [i for i in range(len(images)-1, 0, -2)]
             #y = [i for i in range(0, len(images) - 1, 10)]
 
             for i, j in zip(x, y):
@@ -65,8 +78,8 @@ class JsonCreator:
         count = 0
 
         while True:
-            class_1 = random.choice(self._classes[30:35])
-            class_2 = random.choice(self._classes[30:35])
+            class_1 = random.choice(self._classes[:self._num_classes])
+            class_2 = random.choice(self._classes[:self._num_classes])
 
             if class_1 != class_2:
                 images_1 = os.listdir(os.path.join(self._data_path, class_1))
@@ -104,5 +117,5 @@ class JsonCreator:
 if __name__ == "__main__":
 
     print(os.getcwd())
-    j = JsonCreator(r'H:\Research\JTEKT\Human reid\Dataset\bbox_train', 'dataset_val')
+    j = JsonCreator(r'/bbox_train', 'train', 30)
     j.make()
