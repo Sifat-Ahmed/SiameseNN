@@ -1,0 +1,5 @@
+python main.py --train-json "H:\Research\JTEKT\Human reid\dataset_train.json" --val-json "H:\Research\JTEKT\Human reid\dataset_val.json"
+
+
+python test.py --test-json "H:\Research\JTEKT\Human reid\dataset_val.json" --model-name Siamese
+
