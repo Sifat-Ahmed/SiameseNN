@@ -54,7 +54,9 @@ def test(model, test_loader, cfg, test_data, model_name):
 
     #print(original_lbl, pred_lbl)
 
-    get_roc_curve(original_lbl, pred_lbl, model_name)
+    get_roc_curve(original_lbl,
+                  pred_lbl,
+                  os.path.join(cfg.save_roc_path, model_name))
 
 def main():
     args = helper.parse_test()
@@ -117,9 +119,12 @@ def main():
     # model = resnet.get_model(num_classes).to(DEVICE)
     #
     print(args.model_name+'.pth')
-    if os.path.isfile(args.model_name+'.pth'):
+
+    model_path = os.path.join(cfg.save_model_path, args.model_name+'.pth')
+
+    if os.path.isfile(model_path):
         print('Saved Model found. Loading...')
-        model.load_state_dict(torch.load(args.model_name+'.pth'))
+        model.load_state_dict(torch.load(model_path))
     else:
         raise("Model not found, names are '['Siamese', 'SiameseNetwork', 'SiameseEfficientNet', 'ResNet50', 'ResNet101', 'ResNet152']")
     #
