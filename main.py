@@ -95,17 +95,19 @@ def validation(model, val_loader, cfg, val_loss_graph, name):
     #print(predictions)
 
     global SAVE_MODEL
+    model_path = os.path.join(cfg.save_model_path, name + '.pth')
     if epoch_vloss < SAVE_MODEL:
         SAVE_MODEL = epoch_vloss
-        torch.save(model.state_dict(), name+'.pth')
+        torch.save(model.state_dict(), model_path)
         print('Model Saved!')
 
 def main():
     args = helper.parse_args()
     cfg = Config(args)
 
-
-
+    helper.check_create_paths(cfg.save_model_path,
+                              cfg.save_plot_path,
+                              cfg.save_roc_path)
 
     print("Parsing JSON...")
     json_dataset_parser = ParseJson()
@@ -153,9 +155,11 @@ def main():
         #model = SiameseNetwork()
         model = model.to(DEVICE)
 
-        if os.path.isfile(name+'.pth'):
+        model_path = os.path.join(cfg.save_model_path, name+'.pth')
+
+        if os.path.isfile(model_path):
             print('Saved Model found. Loading...')
-            model.load_state_dict(torch.load(name+'.pth'))
+            model.load_state_dict(torch.load(model_path))
 
         print("Training started")
         train(model,
@@ -167,6 +171,7 @@ def main():
 
         epochs = range(1, cfg.epochs+1)
 
+        plt_path = os.path.join(cfg.save_plot_path , 'loss curve '+ name +'.png')
         plt.figure(figsize=(7,7))
         plt.plot(epochs, training_loss_graph, 'g', label='Training loss')
         plt.plot(epochs, val_loss_graph, 'b', label='validation loss')
@@ -175,7 +180,7 @@ def main():
         plt.ylabel('Loss')
         plt.legend()
         plt.rcParams["font.size"] = "20"
-        plt.savefig('loss curve '+ name +'.png')
+        plt.savefig(plt_path)
     #plt.show()
 
 
