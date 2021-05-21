@@ -2,6 +2,7 @@ import torch.nn as nn
 from torchvision import transforms
 import torch.optim as optim
 from loss.loss_func import ContrastiveLoss
+import os
 
 class Config:
     def __init__(self, args):
@@ -15,6 +16,16 @@ class Config:
         self.val_batch = 8
         self.test_batch = 8
         self.num_workers = 4
+
+        self.__model_folder = r'models'
+        self.__loss_curve_folder = r'loss'
+        self.__roc_folder = r'roc'
+
+        self.save_model_path = os.path.join('saved', self.criterion.__class__.__name__, self.__model_folder)
+        self.save_plot_path = os.path.join('saved', self.criterion.__class__.__name__, self.__loss_curve_folder)
+        self.save_roc_path = os.path.join('saved', self.criterion.__class__.__name__, self.__roc_folder)
+
+
 
         self.transform = transforms.Compose([
                 transforms.ToPILImage(),
