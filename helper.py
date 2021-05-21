@@ -2,6 +2,7 @@ import gc
 import torch
 import matplotlib.pyplot as plt
 from torchvision import transforms
+import os
 import argparse
 
 def parse_args():
@@ -50,7 +51,13 @@ def parse_test():
 
     return parser.parse_args()
 
-
+def check_create_paths(model_path, loss_path, roc_path):
+    if not os.path.exists(model_path):
+        os.makedirs(model_path)
+    if not os.path.exists(loss_path):
+        os.makedirs(loss_path)
+    if not os.path.exists(roc_path):
+        os.makedirs(roc_path)
 
 
 def get_device():
