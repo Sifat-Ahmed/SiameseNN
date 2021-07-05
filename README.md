@@ -1,4 +1,4 @@
-# This repository contains the source code of Human Re-identification task.
+# This repository contains the source code of Siamese Neural Network used for object identification.
 
 ## 1. Folder Structure
     + dataReader
@@ -21,15 +21,9 @@
     ---- main.py
 
 ## 2. How to Run
-#### 2.1. Activating the Virtual Environment
-    2.1.1. Move to the project directory.
-        - project directory: ~/tokyo_project/Human-Re-identification/human_reid
-        - venv directory: ~/tokyo_project/Human-Re-identification/human_reid/venv_torch
-    2.1.2. Move to project directory then activate virtual Environment.
-        - Command: source venv_torch/bin/activate
 
-#### 2.2. Dataset Creation
-- Dataset Directory: /data/public_data/MARS/Unzipped/bbox_train
+#### 2.1. Dataset Creation
+- Dataset Directory: /data/mnist/
 - <b> command </b>: python json_creator_main.py 
 - <b> parameters </b>:
     - [--train-json] :'path to train dataset folder'
@@ -44,7 +38,7 @@
     - [--test-output] : 'output filename/directory without .json'
     - [--num-test-classes] : 'number of test classes to take'
     
-    <b>Example: </b> python json_creator_main.py --train-json 'bbox_train' --train-output 'training_dataset' --num-train-classes 30
+    <b>Example: </b> python json_creator_main.py --train-json 'mnist' --train-output 'training_dataset' --num-train-classes 30
 
     >> This will create training_dataset.json in the default directory.\
     >> Validation and test dataset creation is same as above. Can be created simultaneously.
@@ -53,21 +47,21 @@
     >> To change this behaviour move to <b> json_helper/json_creator.py </b> Line No. 50\
     >> and edit the if condition. Has to be done manually. (TODO)
 
-#### 2.3 Model Training
+#### 2.2 Model Training
 Here is a list of available models for training:
 1. <b> Siamese </b> [Uses only convolution layers, no fully connected layers]
 2. <b> SiameseNetwork </b> [Uses convolution with a fully connected layer]
 3. <b> SiameseEfficientNet </b> [Uses efficientNet-b0 as feature extractor followed by a fully connected layer]
-4. <b> ResNet50 </b> [Uses resnet50 as a feature extracture followed by a fully connected layer]
-5. <b> ResNet101 </b> [Uses resnet101 as a feature extracture followed by a fully connected layer]
-6. <b> ResNet152 </b> [Uses resnet152 as a feature extracture followed by a fully connected layer]
+4. <b> ResNet50 </b> [Uses resnet50 as a feature extractor followed by a fully connected layer]
+5. <b> ResNet101 </b> [Uses resnet101 as a feature extractor followed by a fully connected layer]
+6. <b> ResNet152 </b> [Uses resnet152 as a feature extractor followed by a fully connected layer]
 
 > - Model class definitions are in models folder. For any change required Please refer to that.
 > - All the models with fully connected layers has 5 output neurons. This provides the optimal value. Some other values like 1, 2, 5, 8, 16, 32 has been tried before.
 
-> - By default main.py will start training all the models. To change this behavious, please refer to <b> main.py, line no. 146 </b>. No command line argument added for this.
+> - By default main.py will start training all the models. To change this behavious, please refer to <b> main.py, line no. 146 </b>. No command line argument added for this(TODO).
 
-#### 2.3.1 How to run
+#### 2.2.1 How to run
 >>  #### **config.py** contains all the configuration and parameters.
 >>    1. image width
 >>    2. image height
